@@ -36,6 +36,22 @@ class PessoaController {
     }
   }
 
+  static async updatePeople(req, res) {
+    const { id } = req.params;
+    const updatePerson = req.body;
+
+    try {
+      await db.Pessoas.update(updatePerson, {
+        where: {
+          id: id,
+        },
+      });
+      return res.status(200).send("Usuario atualizado com sucesso");
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
   static async deleteOnePeople(req, res) {
     const { id } = req.params;
 
@@ -46,22 +62,6 @@ class PessoaController {
         },
       });
       return res.status(200).send("excluido com sucesso");
-    } catch (error) {
-      return res.status(500).json(error.message);
-    }
-  }
-
-  static async updatePeople(req, res) {
-    const { id } = req.params;
-    const updatePerson = req.body;
-
-    try {
-      const updatePersonDB = await db.Pessoas.update(updatePerson, {
-        where: {
-          id: id,
-        },
-      });
-      return res.status(200).send("Usuario atualizado com sucesso");
     } catch (error) {
       return res.status(500).json(error.message);
     }
