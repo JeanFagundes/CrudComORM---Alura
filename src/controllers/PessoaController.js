@@ -1,5 +1,4 @@
 const db = require("../models");
-const pessoas = require("../models/pessoas");
 
 class PessoaController {
   static async getAllPersons(req, res) {

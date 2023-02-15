@@ -1,38 +1,52 @@
-"use strict";
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
       "Pessoas",
       [
         {
-          nome: "Jean Fagundes",
+          nome: "Ana Souza",
           ativo: true,
-          email: "Jean@hotmail.com",
+          email: "ana@ana.com",
           role: "estudante",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          nome: "Amanda Scolaro",
+          nome: "Marcos Cintra",
+          ativo: true,
+          email: "marcos@marcos.com",
+          role: "estudante",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          nome: "Felipe Cardoso",
+          ativo: true,
+          email: "felipe@felipe.com",
+          role: "estudante",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          nome: "Sandra Gomes",
           ativo: false,
-          email: "Amanda@hotmail.com",
+          email: "sandra@sandra.com",
           role: "estudante",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          nome: "Nelson Scolaro",
+          nome: "Paula Morais",
           ativo: true,
-          email: "Nelson@hotmail.com",
+          email: "paula@paula.com",
           role: "docente",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          nome: "Lucia Scolaro",
-          ativo: false,
-          email: "Lucia@hotmail.com",
+          nome: "Sergio Lopes",
+          ativo: true,
+          email: "sergio@sergio.com",
           role: "docente",
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -43,6 +57,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete("People", null, {});
+    return queryInterface.bulkDelete("Pessoas", null, {});
   },
 };
