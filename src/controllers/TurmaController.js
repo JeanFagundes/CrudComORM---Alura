@@ -1,12 +1,19 @@
-const db = require("../models");
+const db = require('../models');
+const Sequelize = require('sequelize');
+const op = Sequelize.Op;
 
 class TurmaController {
   static async pegaTodasAsTurmas(req, res) {
-    try {
-      console.log("entrou");
+    const { data_inicial, data_final } = req.query;
 
-      const todasAsTurmas = await db.Turmas.findAll();
-      console.log(todasAsTurmas);
+    //Passar parametros por query para indicar tumar que está entre a data inicial solicitada e a final
+    const where = {};
+    data_inicial || data_final ? (where.data_inicio = {}) : null;
+    data_inicial ? (where.data_inicio[op.gte] = data_inicial) : null;
+    data_final ? (where.data_final[op.lte] = data_final) : null;
+    try {
+      console.log('entrou');
+      const todasAsTurmas = await db.Turmas.findAll({ where });
       return res.status(200).json(todasAsTurmas);
     } catch (error) {
       return res.status(500).json(error);
@@ -47,7 +54,7 @@ class TurmaController {
           id: id,
         },
       });
-      return res.status(200).send("Turma atualizado com sucesso");
+      return res.status(200).send('Turma atualizado com sucesso');
     } catch (error) {
       return res.status(500).json(error.message);
     }
@@ -62,7 +69,16 @@ class TurmaController {
           id: Number(id),
         },
       });
-      return res.status(200).send("Turma excluido com sucesso");
+      return res.status(200).send('Turma excluido com sucesso');
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+  static async restauraTurma(req, res) {
+    const { id } = req.params;
+    try {
+      await db.Turmas.restore({ where: { id: Number(id) } });
+      return res.status(200).json({ mensagem: `id ${id} restaurado` });
     } catch (error) {
       return res.status(500).json(error.message);
     }

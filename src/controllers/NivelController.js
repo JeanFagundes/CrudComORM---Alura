@@ -1,4 +1,4 @@
-const db = require("../models");
+const db = require('../models');
 
 class NivelController {
   static async pegaTodosOsNiveis(req, res) {
@@ -44,7 +44,7 @@ class NivelController {
           id: id,
         },
       });
-      return res.status(200).send("Nivel atualizado com sucesso");
+      return res.status(200).send('Nivel atualizado com sucesso');
     } catch (error) {
       return res.status(500).json(error.message);
     }
@@ -59,7 +59,16 @@ class NivelController {
           id: Number(id),
         },
       });
-      return res.status(200).send("Nivel excluido com sucesso");
+      return res.status(200).send('Nivel excluido com sucesso');
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+  static async restauraNivel(req, res) {
+    const { id } = req.params;
+    try {
+      await db.Niveis.restore({ where: { id: Number(id) } });
+      return res.status(200).json({ mensagem: `id ${id} restaurado` });
     } catch (error) {
       return res.status(500).json(error.message);
     }
