@@ -1,5 +1,5 @@
-/* eslint-disable no-undef */
 const db = require('../models');
+const Sequelize = require('sequelize');
 
 class PessoaController {
   static async pegaPessoasAtivas(req, res) {
@@ -198,6 +198,18 @@ class PessoaController {
         having: Sequelize.literal(`count(turma_id) >= ${lotacaoTurma}`),
       });
       return res.status(200).json(turmasLotadas.count);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+  static async cancelaPessoa(req, res) {
+    const { estudanteId } = req.params;
+    try {
+      db.sequelize.transaction(async transacao => {
+        await db.Pessoas.update({ ativo: false }, { where: { id: Number(estudanteId) } }, { transaction: transacao });
+        await db.Matriculas.update({ status: 'cancelado' }, { where: { estudante_id: Number(estudanteId) } }, { transaction: transacao });
+        return res.status(200).json({ message: `matrículas ref. estudante ${estudanteId} canceladas` });
+      });
     } catch (error) {
       return res.status(500).json(error.message);
     }
