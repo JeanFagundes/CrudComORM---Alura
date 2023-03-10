@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const db = require('../models');
 
 class PessoaController {
@@ -167,6 +168,36 @@ class PessoaController {
       const matriculas = await pessoa.getAulasMatriculadas();
 
       return res.status(200).json(matriculas);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+  static async pegaMatriculaPorTurma(req, res) {
+    const { turmaId } = req.params;
+    try {
+      const todasAsMatriculas = await db.Matriculas.findAndCountAll({
+        where: {
+          turma_id: Number(turmaId),
+          status: 'confirmado',
+        },
+      });
+      return res.status(200).json(todasAsMatriculas);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+  static async pegaTurmasLotadas(req, res) {
+    const lotacaoTurma = 2;
+    try {
+      const turmasLotadas = await db.Matriculas.findAndCountAll({
+        where: {
+          status: 'confirmado',
+        },
+        attributes: ['turma_id'],
+        group: ['turma_id'],
+        having: Sequelize.literal(`count(turma_id) >= ${lotacaoTurma}`),
+      });
+      return res.status(200).json(turmasLotadas.count);
     } catch (error) {
       return res.status(500).json(error.message);
     }
